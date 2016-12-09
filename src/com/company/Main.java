@@ -23,30 +23,30 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Which ruby file would you like to test ?");
         String rubyFile = scanner.next();
+        String jsFile = rubyFile+".js";
 
         String jsPath = path+"executable\\js\\";
         String rbPath = path+"executable\\ruby\\";
 
-        String query = "node "+jsPath+"test_hello.js";
-        String queryRb = "ruby " +rbPath+"hello.rb";
-        String queryOpal = "opal -c " +rbPath+"hello.rb > "+rbPath+"hello.rb.js";
-        String queryRbJs = "node "+rbPath+"hello.rb.js";
+        String queryRb = "ruby " +rbPath+rubyFile;
+        String queryOpal = "opal -c " +rbPath+rubyFile+" > "+jsPath+jsFile;
+        String queryRbJs = "node "+jsPath+jsFile;
 
         try {
 
-            Process exec = new ProcessBuilder("CMD", "/C", query).start();
-            Process execRb = new ProcessBuilder("CMD", "/C", queryRb).start();
+            //Exec opal
             Process execOpal = new ProcessBuilder("CMD", "/C", queryOpal).start();
             execOpal.waitFor();
+            //Exec Rb
+            Process execRb = new ProcessBuilder("CMD", "/C", queryRb).start();
+
 
             Process execRbJs = new ProcessBuilder("CMD", "/C", queryRbJs).start();
             execRbJs.waitFor();
-            InputStream stdout = exec.getInputStream();
             InputStream stdoutRb = execRb.getInputStream();
             InputStream stdoutRbJs = execRbJs.getInputStream();
 
-            byte[] out = new byte[500];
-            stdout.read(out);
+
 
             byte[] outRb = new byte[500];
             stdoutRb.read(outRb);
@@ -54,13 +54,11 @@ public class Main {
             byte[] outRbJs = new byte[500];
             stdoutRbJs.read(outRbJs);
 
-            String s = new String(out, "US-ASCII");
             String srb = new String(outRb,"US-ASCII");
             String srbjs = new String(outRbJs,"US-ASCII");
 
             System.out.println("Path: "+path);
 
-            System.out.println("res JS = "+s);
             System.out.println("res rb = "+srb);
             System.out.println("res rbjs = "+srbjs);
 
