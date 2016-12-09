@@ -6,5 +6,4 @@ def pascalTriangle(num)
   end
   return res
 end
-puts pascalTriangle(13)[6]
 puts pascalTriangle(31)[15]
