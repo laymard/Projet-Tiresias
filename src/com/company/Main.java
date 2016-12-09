@@ -3,6 +3,8 @@ package com.company;
 import sun.misc.IOUtils;
 
 import java.io.InputStream;
+import java.util.Scanner;
+
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.lang.reflect.Array;
@@ -18,8 +20,12 @@ public class Main {
 
     public static void main(String[] args) {
         String path = getCurrentPath();
-        String jsPath = path+"executable\\js\\";
 
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Which ruby file would you like to test ?");
+        String rubyFile = scanner.next();
+
+        String jsPath = path+"executable\\js\\";
         String rbPath = path+"executable\\ruby\\";
 
         String query = "node "+jsPath+"test_hello.js";
@@ -28,29 +34,18 @@ public class Main {
         String queryRbJs = "node "+jsPath+"hello.rb.js";
 
         try {
-           //Process exec = Runtime.getRuntime().exec(query);
-            //Process exec = new ProcessBuilder("CMD", "/C", query).start();
-            //InputStream stdout = exec.getInputStream();
-            //exec.waitFor();
-            //exec.destroy();
-
-
-            //Process execRb = new ProcessBuilder("CMD", "/C", queryRb).start();
-            Process execRb = Runtime.getRuntime().exec(queryRb);
-            InputStream stdoutRb = execRb.getInputStream();
-            execRb.waitFor();
-
-
-            //Process execOpal = new ProcessBuilder("CMD", "/C", queryOpal).start();
-            //execOpal.waitFor(2000, TimeUnit.MILLISECONDS);
-
-
+            Process exec = new ProcessBuilder("CMD", "/C", query).start();
+            Process execRb = new ProcessBuilder("CMD", "/C", queryRb).start();
+            Process execOpal = new ProcessBuilder("CMD", "/C", queryOpal).start();
+            execOpal.waitFor();
             Process execRbjs = new ProcessBuilder("CMD", "/C", queryRbJs).start();
+            InputStream stdout = exec.getInputStream();
+            InputStream stdoutRb = execRb.getInputStream();
             InputStream stdoutRbJS = execRbjs.getInputStream();
-            execRbjs.waitFor(2000, TimeUnit.MILLISECONDS);
 
-            //byte[] out = new byte[500];
-            //stdout.read(out);
+
+            byte[] out = new byte[500];
+            stdout.read(out);
 
             byte[] outRb = new byte[500];
             stdoutRb.read(outRb);
@@ -58,11 +53,11 @@ public class Main {
             byte[] outRbJs = new byte[500];
             stdoutRbJS.read(outRbJs);
 
-            //String s = new String(out, "US-ASCII");
+            String s = new String(out, "US-ASCII");
             String srb = new String(outRb,"US-ASCII");
             String srbjs = new String(outRbJs,"US-ASCII");
             System.out.println("Path: "+path);
-           // System.out.println("res JS = "+s);
+            System.out.println("res JS = "+s);
             System.out.println("res rb = "+srb);
             System.out.println("res rbjs = "+srbjs);
 
