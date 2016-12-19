@@ -17,6 +17,18 @@ public class Main {
         return dir;
     }
 
+    // Enlève les \r et \n à la fin de la chaine, et les blocs vide liés au byte[]
+    public static String processOutput(String out){
+        out = out.replaceAll("[\n\r]", "");
+        int i=0;
+        boolean diffDe0 = out.charAt(i) !=0;
+        while(i<out.length() && diffDe0){
+            i++;
+            diffDe0 = out.charAt(i) !=0;
+        }
+        return  out.substring(0,i);
+    }
+
     public static void main(String[] args) {
         String path = getCurrentPath();
 
@@ -59,8 +71,21 @@ public class Main {
 
             System.out.println("Path: "+path);
 
+            srb = Main.processOutput(srb);
+            srbjs = Main.processOutput(srbjs);
+
+
+
+
             System.out.println("res rb = "+srb);
             System.out.println("res rbjs = "+srbjs);
+            boolean equal = srb.equals(srbjs);
+
+            if(srbjs.equals(srb)){
+                System.out.println("Good Result");
+            }else{
+                System.out.println("Bad Result, expected : "+srb+", got "+srbjs);
+            }
 
 
         }catch ( Exception e  ){
