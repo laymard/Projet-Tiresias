@@ -1,0 +1,1 @@
+puts "asdf\nqwer".gsub(/(^|$)/, "z")
