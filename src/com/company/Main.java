@@ -32,6 +32,9 @@ public class Main {
     public static void main(String[] args) {
         String path = getCurrentPath();
 
+        //Generator generator = new Generator();
+        //generator.generateFiles();
+
         Scanner scanner = new Scanner(System.in);
         System.out.println("Which ruby file would you like to test ?");
         String rubyFile = scanner.next();
@@ -49,6 +52,11 @@ public class Main {
             //Exec opal
             Process execOpal = new ProcessBuilder("CMD", "/C", queryOpal).start();
             execOpal.waitFor();
+            InputStream stderrOpal = execOpal.getErrorStream();
+            byte[] errOp = new byte[500];
+            stderrOpal.read(errOp);
+            String error = new String(errOp,"US-ASCII");
+            System.out.println("Error of opal : "+error);
             //Exec Rb
             Process execRb = new ProcessBuilder("CMD", "/C", queryRb).start();
 
