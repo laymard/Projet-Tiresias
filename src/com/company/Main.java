@@ -55,8 +55,12 @@ public class Main {
             InputStream stderrOpal = execOpal.getErrorStream();
             byte[] errOp = new byte[500];
             stderrOpal.read(errOp);
-            String error = new String(errOp,"US-ASCII");
-            System.out.println("Error of opal : "+error);
+
+            if(errOp[0] != 0){
+
+                String error = new String(errOp,"US-ASCII");
+                System.out.println("Error of opal : "+error);
+            }
             //Exec Rb
             Process execRb = new ProcessBuilder("CMD", "/C", queryRb).start();
 
