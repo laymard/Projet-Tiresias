@@ -9,6 +9,9 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by Lolo on 19/01/2017.
  */
@@ -45,6 +48,17 @@ public class Generator {
         generationCommand = "opal -c {0} > {1}";
         typeOfGenFile=".js";
         typeOfSrcFile=".rb";
+    }
+
+    public Generator(JSONObject o ) throws JSONException{
+        final String dir = System.getProperty("user.dir")+"\\";
+        srcFolder = dir+o.getString("srcFolder");
+        genFolder = dir+o.getString("genFolder");
+        launchGenFileCommand = o.getString("launchGenFileCommand");
+        launchSrcFileCommand =o.getString("launchGenFileCommand");
+        generationCommand = o.getString("generationCommand");
+        typeOfGenFile=o.getString("typeOfGenFile");
+        typeOfSrcFile=o.getString("typeOfSrcFile");
     }
 
     public void generateFiles(){

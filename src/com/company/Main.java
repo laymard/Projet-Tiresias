@@ -1,14 +1,20 @@
 package com.company;
 
+import jdk.nashorn.internal.parser.JSONParser;
 import sun.misc.IOUtils;
 
+import java.io.File;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
 
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.lang.reflect.Array;
 import java.util.Arrays;
+
+import org.json.*;
 
 public class Main {
 
@@ -29,82 +35,26 @@ public class Main {
         return  out.substring(0,i);
     }
 
+
+
     public static void main(String[] args) {
         String path = getCurrentPath();
+        String configFileName  = "config.json";
 
-        Generator generator = new Generator();
-        generator.setSrcFolder("executable\\testsruby\\");
-        generator.generateFiles();
-        generator.executeTest();
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Which ruby file would you like to test ?");
-        String rubyFile = scanner.next();
-        String jsFile = rubyFile+".js";
-
-        String jsPath = path+"executable\\js\\";
-        String rbPath = path+"executable\\ruby\\";
-
-        String queryRb = "ruby " +rbPath+rubyFile;
-        String queryOpal = "opal -c " +rbPath+rubyFile+" > "+jsPath+jsFile;
-        String queryRbJs = "node "+jsPath+jsFile;
-
-        try {
-
-            //Exec opal
-            Process execOpal = new ProcessBuilder("CMD", "/C", queryOpal).start();
-            execOpal.waitFor();
-            InputStream stderrOpal = execOpal.getErrorStream();
-            byte[] errOp = new byte[500];
-            stderrOpal.read(errOp);
-
-            if(errOp[0] != 0){
-
-                String error = new String(errOp,"US-ASCII");
-                System.out.println("Error of opal : "+error);
-            }
-            //Exec Rb
-            Process execRb = new ProcessBuilder("CMD", "/C", queryRb).start();
-
-
-            Process execRbJs = new ProcessBuilder("CMD", "/C", queryRbJs).start();
-            execRbJs.waitFor();
-            InputStream stdoutRb = execRb.getInputStream();
-            InputStream stdoutRbJs = execRbJs.getInputStream();
-
-
-
-            byte[] outRb = new byte[500];
-            stdoutRb.read(outRb);
-
-            byte[] outRbJs = new byte[500];
-            stdoutRbJs.read(outRbJs);
-
-            String srb = new String(outRb,"US-ASCII");
-            String srbjs = new String(outRbJs,"US-ASCII");
-
-            System.out.println("Path: "+path);
-
-            srb = Main.processOutput(srb);
-            srbjs = Main.processOutput(srbjs);
-
-
-
-
-            System.out.println("res rb = "+srb);
-            System.out.println("res rbjs = "+srbjs);
-            boolean equal = srb.equals(srbjs);
-
-            if(srbjs.equals(srb)){
-                System.out.println("Good Result");
-            }else{
-                System.out.println("Bad Result, expected : "+srb+", got "+srbjs);
-            }
-
-
-        }catch ( Exception e  ){
-
+        try{
+            byte[] encodeFile = Files.readAllBytes(Paths.get(path,configFileName));
+            String content = new String (encodeFile,"US-ASCII");
+            JSONObject data = new JSONObject(content);
+            Generator genFromJson  = new Generator(data);
+            genFromJson.setSrcFolder("executable\\testsruby\\");
+            genFromJson.generateFiles();
+            genFromJson.executeTest();
+        }catch(Exception error){
+            error.printStackTrace();
         }
+
+
+
 
     }
 }

@@ -1,0 +1,10 @@
+{
+    "srcFolder" : "executable\\testsruby\\",
+    "genFolder" : "executable\\js\\",
+    "launchGenFileCommand" : "node {0}",
+    "launchSrcFileCommand" : "ruby {0}",
+    "generationCommand" : "opal -c {0} > {1}",
+    "typeOfGenFile" : ".js",
+    "typeOfSrcFile" : ".rb"
+
+}
