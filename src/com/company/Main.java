@@ -38,9 +38,21 @@ public class Main {
 
 
     public static void main(String[] args) {
+        String configFileName;
+
+        if(args.length == 0){
+            configFileName = "config.json";
+        }else{
+            if(!args[0].toLowerCase().endsWith(".json")){
+                System.out.println("Input file isn't a JSON file");
+                System.exit(0);
+            }
+            configFileName = args[0];
+
+        }
+
 
         String path = getCurrentPath();
-        String configFileName  = "config.json";
 
         try{
             byte[] encodeFile = Files.readAllBytes(Paths.get(path,configFileName));
