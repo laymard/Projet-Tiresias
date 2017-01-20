@@ -19,7 +19,7 @@ public class Main {
 
     // Enlève les \r et \n à la fin de la chaine, et les blocs vide liés au byte[]
     public static String processOutput(String out){
-        out = out.replaceAll("[\n\r]", "");
+        out = out.replaceAll("[\r]", "");
         int i=0;
         boolean diffDe0 = out.charAt(i) !=0;
         while(i<out.length() && diffDe0){
@@ -35,6 +35,7 @@ public class Main {
         Generator generator = new Generator();
         generator.setSrcFolder("executable\\testsruby\\");
         generator.generateFiles();
+        generator.executeTest();
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Which ruby file would you like to test ?");

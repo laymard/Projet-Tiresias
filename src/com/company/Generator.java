@@ -1,7 +1,10 @@
 package com.company;
 
+import jdk.internal.util.xml.impl.Input;
+
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,8 +29,10 @@ public class Generator {
     // Command to launch generated files
     private String launchGenFileCommand;
 
-
+    // Extension of source file
     private String typeOfSrcFile;
+
+    // Extension of generated file
     private String typeOfGenFile;
 
     // Create a generator to test opal rb2js
@@ -35,12 +40,11 @@ public class Generator {
         final String dir = System.getProperty("user.dir")+"\\";
         srcFolder = dir+"executable\\ruby\\";
         genFolder = dir+"executable\\js\\";
-        launchGenFileCommand = "ruby {0}";
-        launchSrcFileCommand = "node {0}";
+        launchGenFileCommand = "node {0}";
+        launchSrcFileCommand = "ruby {0}";
         generationCommand = "opal -c {0} > {1}";
         typeOfGenFile=".js";
         typeOfSrcFile=".rb";
-
     }
 
     public void generateFiles(){
@@ -52,9 +56,9 @@ public class Generator {
             }
         });
         ArrayList<File> listSrcFiles = new ArrayList<File>(Arrays.asList(files));
-
         // Avec ce beau lambda, on mérite de figurer dans vos tweet non ? (@aymard_laurent)
         listSrcFiles.forEach((e)->{
+                    System.out.println("Generating from "+e.getName());
                     String command=MessageFormat.format(generationCommand,srcFolder+e.getName(),genFolder+e.getName()+typeOfGenFile);
                     try{
                         Process execOpal = new ProcessBuilder("CMD", "/C", command).start();
@@ -62,15 +66,72 @@ public class Generator {
                     }catch (Exception error){
                         System.err.println("Couldn't create the file "+e.getName()+typeOfGenFile);
                     }
+        });
+    }
 
+    public void executeTest(){
+        ArrayList<String> resultSource = new ArrayList<>();
+        ArrayList<String> resultGenerated = new ArrayList<>();
+
+
+        File folder = new File(srcFolder);
+        File[] files = folder.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(typeOfSrcFile);
+            }
         });
 
+        for (File f : files){
+            System.out.println("Executing "+f.getName());
+            String command=MessageFormat.format(launchSrcFileCommand,srcFolder+f.getName());
+            try {
+                Process execSource = new ProcessBuilder("CMD", "/C", command).start();
+                execSource.waitFor();
+                InputStream stdout = execSource.getInputStream();
+                byte[] out = new byte[1000];
+                stdout.read(out);
+                String output = new String (out,"US-ASCII");
+                output=Main.processOutput(output);
+                resultSource.add(output);
+            }catch (  Exception error){
 
+            }
+        }
 
+        folder = new File(genFolder);
+        files = folder.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(typeOfGenFile);
+            }
+        });
+        for (File f : files){
+            System.out.println("Executing "+f.getName());
+            String command=MessageFormat.format(launchGenFileCommand,genFolder+f.getName());
+            System.out.println("Command is "+command);
+            try {
+                Process execGenerated = new ProcessBuilder("CMD", "/C", command).start();
+                execGenerated.waitFor();
+                InputStream stdout = execGenerated.getInputStream();
+                InputStream stderr = execGenerated.getErrorStream();
+                byte[] out = new byte[1000];
+                stdout.read(out);
+                String output = new String (out,"US-ASCII");
+                output=Main.processOutput(output);
+                resultGenerated.add(output);
+            }catch (  Exception error){
+            }
+        }
 
-
-
-
+        for(int i=0;i<resultSource.size();i++){
+            if(resultGenerated.get(i).equals(resultSource.get(i))){
+                System.out.println("Test "+i+" is valid");
+            }else{
+                System.out.println("Test "+i+" is invalid");
+                System.out.println("Expected : "+resultSource.get(i)+" Got : "+resultGenerated.get(i));
+            }
+        }
     }
 
     public String getTypeOfGenFile() {
@@ -80,10 +141,6 @@ public class Generator {
     public void setTypeOfGenFile(String typeOfGenFile) {
         this.typeOfGenFile = typeOfGenFile;
     }
-
-
-
-
 
     public String getGenerationCommand() {
         return generationCommand;
@@ -106,7 +163,8 @@ public class Generator {
     }
 
     public void setGenFolder(String genFolder) {
-        this.genFolder = genFolder;
+
+        this.genFolder = System.getProperty("user.dir")+"\\"+genFolder;
     }
 
     public String getLaunchSrcFileCommand() {
