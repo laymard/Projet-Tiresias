@@ -98,7 +98,7 @@ public class Generator {
     }
 
     public void setSrcFolder(String srcFolder) {
-        this.srcFolder = srcFolder;
+        this.srcFolder = System.getProperty("user.dir")+"\\"+srcFolder;
     }
 
     public String getGenFolder() {

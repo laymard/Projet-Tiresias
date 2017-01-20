@@ -32,8 +32,9 @@ public class Main {
     public static void main(String[] args) {
         String path = getCurrentPath();
 
-        //Generator generator = new Generator();
-        //generator.generateFiles();
+        Generator generator = new Generator();
+        generator.setSrcFolder("executable\\testsruby\\");
+        generator.generateFiles();
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Which ruby file would you like to test ?");
