@@ -38,6 +38,7 @@ public class Main {
 
 
     public static void main(String[] args) {
+
         String path = getCurrentPath();
         String configFileName  = "config.json";
 
@@ -47,7 +48,7 @@ public class Main {
             JSONObject data = new JSONObject(content);
             Generator genFromJson  = new Generator(data);
             genFromJson.setSrcFolder("executable\\testsruby\\");
-            //genFromJson.generateFiles();
+            genFromJson.generateFiles();
             genFromJson.executeTest();
         }catch(Exception error){
             error.printStackTrace();
