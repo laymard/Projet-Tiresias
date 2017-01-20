@@ -55,6 +55,10 @@ public class Generator {
                 return name.endsWith(typeOfSrcFile);
             }
         });
+
+        File outFolder = new File(genFolder);
+        if(!outFolder.exists()) outFolder.mkdir();
+
         ArrayList<File> listSrcFiles = new ArrayList<File>(Arrays.asList(files));
         // Avec ce beau lambda, on mérite de figurer dans vos tweet non ? (@aymard_laurent)
         listSrcFiles.forEach((e)->{
@@ -100,6 +104,7 @@ public class Generator {
         }
 
         folder = new File(genFolder);
+
         files = folder.listFiles(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
@@ -125,7 +130,9 @@ public class Generator {
         }
 
         for(int i=0;i<resultSource.size();i++){
+            System.out.println("Testing "+files[i]);
             if(resultGenerated.get(i).equals(resultSource.get(i))){
+
                 System.out.println("Test "+i+" is valid");
             }else{
                 System.out.println("Test "+i+" is invalid");
