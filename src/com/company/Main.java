@@ -47,7 +47,7 @@ public class Main {
             JSONObject data = new JSONObject(content);
             Generator genFromJson  = new Generator(data);
             genFromJson.setSrcFolder("executable\\testsruby\\");
-            genFromJson.generateFiles();
+            //genFromJson.generateFiles();
             genFromJson.executeTest();
         }catch(Exception error){
             error.printStackTrace();

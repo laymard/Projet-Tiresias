@@ -55,7 +55,7 @@ public class Generator {
         srcFolder = dir+o.getString("srcFolder");
         genFolder = dir+o.getString("genFolder");
         launchGenFileCommand = o.getString("launchGenFileCommand");
-        launchSrcFileCommand =o.getString("launchGenFileCommand");
+        launchSrcFileCommand =o.getString("launchSrcFileCommand");
         generationCommand = o.getString("generationCommand");
         typeOfGenFile=o.getString("typeOfGenFile");
         typeOfSrcFile=o.getString("typeOfSrcFile");
@@ -144,10 +144,11 @@ public class Generator {
         }
 
         for(int i=0;i<resultSource.size();i++){
-            System.out.println("Testing "+files[i]);
+            System.out.println("Testing "+files[i].getName());
             if(resultGenerated.get(i).equals(resultSource.get(i))){
-
                 System.out.println("Test "+i+" is valid");
+                System.out.println("Source file produced : "+resultSource.get(i)+" Generated file produced : "+resultGenerated.get(i));
+
             }else{
                 System.out.println("Test "+i+" is invalid");
                 System.out.println("Expected : "+resultSource.get(i)+" Got : "+resultGenerated.get(i));
