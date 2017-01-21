@@ -6,4 +6,9 @@ class George
 end
 
 n = George.new
-n.name = "Walter White" # should raise error
+begin
+  n.name = "Walter White" # should raise error
+rescue Exception => e
+  puts("Error raised, as expected")
+  puts(e.message)
+end

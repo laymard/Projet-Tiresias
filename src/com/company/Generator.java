@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -41,7 +42,7 @@ public class Generator {
     // Create a generator to test opal rb2js
     public Generator(){
         final String dir = System.getProperty("user.dir")+"\\";
-        srcFolder = dir+"executable\\ruby\\";
+        srcFolder = dir+"executable\\testspython\\";
         genFolder = dir+"executable\\js\\";
         launchGenFileCommand = "node {0}";
         launchSrcFileCommand = "ruby {0}";
@@ -88,8 +89,8 @@ public class Generator {
     }
 
     public void executeTest(){
-        ArrayList<String> resultSource = new ArrayList<>();
-        ArrayList<String> resultGenerated = new ArrayList<>();
+        HashMap<String,String> resultSource = new HashMap<>();
+        HashMap<String,String> resultGenerated = new HashMap<>();
 
 
         File folder = new File(srcFolder);
@@ -111,7 +112,7 @@ public class Generator {
                 stdout.read(out);
                 String output = new String (out,"US-ASCII");
                 output=Main.processOutput(output);
-                resultSource.add(output);
+                resultSource.put(f.getName(),output);
             }catch (  Exception error){
 
             }
@@ -137,20 +138,20 @@ public class Generator {
                 stdout.read(out);
                 String output = new String (out,"US-ASCII");
                 output=Main.processOutput(output);
-                resultGenerated.add(output);
+                resultGenerated.put(f.getName(), output);
             }catch (  Exception error){
             }
         }
 
-        for(int i=0;i<resultSource.size();i++){
-            System.out.println("Testing "+files[i].getName());
-            if(resultGenerated.get(i).equals(resultSource.get(i))){
-                System.out.println("Test "+i+" is valid");
-                System.out.println("Source file produced : "+resultSource.get(i)+" Generated file produced : "+resultGenerated.get(i));
+        for(String key: resultSource.keySet()){
+            System.out.println("Testing "+key);
+            if(resultGenerated.get(key+typeOfGenFile).equals(resultSource.get(key))){
+                System.out.println("Test "+key+" is valid");
+                System.out.println("Source file produced : "+resultSource.get(key)+" Generated file produced : "+resultGenerated.get(key+typeOfGenFile));
 
             }else{
-                System.out.println("Test "+i+" is invalid");
-                System.out.println("Expected : "+resultSource.get(i)+" Got : "+resultGenerated.get(i));
+                System.out.println("Test "+key+" is invalid");
+                System.out.println("Expected : "+resultSource.get(key)+" Got : "+resultGenerated.get(key+typeOfGenFile));
             }
         }
     }
