@@ -59,7 +59,7 @@ public class Main {
             String content = new String (encodeFile,"US-ASCII");
             JSONObject data = new JSONObject(content);
             Generator genFromJson  = new Generator(data);
-            genFromJson.setSrcFolder("executable\\testsruby\\");
+            //genFromJson.setSrcFolder("executable\\testsruby\\");
             genFromJson.generateFiles();
             genFromJson.executeTest();
         }catch(Exception error){

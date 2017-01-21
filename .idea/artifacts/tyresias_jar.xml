@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="projet_ij:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/projet_ij_jar</output-path>
+  <artifact type="jar" name="tyresias:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/tyresias_jar</output-path>
     <root id="archive" name="projet_ij.jar">
       <element id="module-output" name="projet_ij" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/json/json/20070829/json-20070829.jar" path-in-jar="/" />

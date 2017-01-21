@@ -128,7 +128,6 @@ public class Generator {
         for (File f : files){
             System.out.println("Executing "+f.getName());
             String command=MessageFormat.format(launchGenFileCommand,genFolder+f.getName());
-            System.out.println("Command is "+command);
             try {
                 Process execGenerated = new ProcessBuilder("CMD", "/C", command).start();
                 execGenerated.waitFor();
