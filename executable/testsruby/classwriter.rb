@@ -4,4 +4,9 @@ end
 
 n = George.new
 n.name = "Walter White"
-puts n.name # should raise error
+begin
+  puts n.name # should raise error
+rescue Exception => e
+  puts("Error raised, as expected")
+  puts(e.message)
+end
