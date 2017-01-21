@@ -10,5 +10,5 @@ begin
   n.name = "Walter White" # should raise error
 rescue Exception => e
   puts("Error raised, as expected")
-  puts(e.message)
+  puts(e.class.name)
 end

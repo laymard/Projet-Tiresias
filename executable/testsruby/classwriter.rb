@@ -8,5 +8,5 @@ begin
   puts n.name # should raise error
 rescue Exception => e
   puts("Error raised, as expected")
-  puts(e.message)
+  puts(e.class.name)
 end
