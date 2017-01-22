@@ -1,0 +1,10 @@
+{
+    "srcFolder" : "executable\\JUnitTestFiles\\",
+    "genFolder" : "executable\\junittests\\",
+    "launchGenFileCommand" : "node {0}",
+    "launchSrcFileCommand" : "go run {0}",
+    "generationCommand" : "gopherjs build {0} -o {1}",
+    "typeOfGenFile" : ".js",
+    "typeOfSrcFile" : ".go"
+
+}
