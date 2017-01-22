@@ -145,13 +145,17 @@ public class Generator {
 
         for(String key: resultSource.keySet()){
             System.out.println("Testing "+key);
-            if(resultGenerated.get(key+typeOfGenFile).equals(resultSource.get(key))){
+            if(resultSource.get(key).equals(resultGenerated.get(key+typeOfGenFile))){
                 System.out.println("Test "+key+" is valid");
                 System.out.println("Source file produced : "+resultSource.get(key)+" Generated file produced : "+resultGenerated.get(key+typeOfGenFile));
 
-            }else{
+            }else if(resultGenerated.get(key+typeOfGenFile) == null){
                 System.out.println("Test "+key+" is invalid");
-                System.out.println("Expected : "+resultSource.get(key)+" Got : "+resultGenerated.get(key+typeOfGenFile));
+                System.out.println("No file was generated.");
+            }
+            else{
+                    System.out.println("Test "+key+" is invalid");
+                    System.out.println("Expected : "+resultSource.get(key)+" Got : "+resultGenerated.get(key+typeOfGenFile));
             }
         }
     }
