@@ -1,2 +1,2 @@
 i=2
-puts 5%i
+puts 5 % i
