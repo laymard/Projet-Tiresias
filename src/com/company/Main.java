@@ -35,6 +35,18 @@ public class Main {
         return  out.substring(0,i);
     }
 
+    public static JSONObject JSONFromPath(String pathtojson){
+        try {
+            String path = Main.getCurrentPath();
+            byte[] encodeFile = Files.readAllBytes(Paths.get(path, pathtojson));
+            String content = new String(encodeFile, "US-ASCII");
+            JSONObject data = new JSONObject(content);
+            return data;
+        } catch (Exception error) {
+            error.printStackTrace();
+            return null;
+        }
+    }
 
 
     public static void main(String[] args) {
@@ -52,13 +64,9 @@ public class Main {
         }
 
 
-        String path = getCurrentPath();
 
         try{
-            byte[] encodeFile = Files.readAllBytes(Paths.get(path,configFileName));
-            String content = new String (encodeFile,"US-ASCII");
-            JSONObject data = new JSONObject(content);
-            Generator genFromJson  = new Generator(data);
+            Generator genFromJson  = new Generator(configFileName);
             //genFromJson.setSrcFolder("executable\\testsruby\\");
             genFromJson.generateFiles();
             genFromJson.executeTest();

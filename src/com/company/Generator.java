@@ -5,6 +5,8 @@ import jdk.internal.util.xml.impl.Input;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,6 +62,10 @@ public class Generator {
         generationCommand = o.getString("generationCommand");
         typeOfGenFile=o.getString("typeOfGenFile");
         typeOfSrcFile=o.getString("typeOfSrcFile");
+    }
+
+    public Generator(String pathtoconfig) throws JSONException{
+        this(Main.JSONFromPath(pathtoconfig));
     }
 
     public void generateFiles(){
