@@ -4,6 +4,7 @@
     <root id="archive" name="projet_ij.jar">
       <element id="module-output" name="projet_ij" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/json/json/20070829/json-20070829.jar" path-in-jar="/" />
+      <element id="library" level="project" name="org.json:json:20070829" />
     </root>
   </artifact>
 </component>
